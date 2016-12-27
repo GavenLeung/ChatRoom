@@ -3,6 +3,8 @@ var app = angular.module('ChatApp');
 app.controller('chatController', ['$scope', 'socketFactory', 'dataModelService',
  	function($scope,socket,dataModelService){
 
+
+
  		$scope.chatRoom = dataModelService.initScope();
 
  		$scope.login = function(loginName, loginPassword){
