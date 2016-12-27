@@ -1,14 +1,9 @@
-var app = angular.module('ChatApp',[]);
+var app = angular.module('ChatApp');
 
-app.controller('chatController', ['$scope', 
- 	function($scope){
- 		var socket = io();
- 		var userInfo = {
- 			name: '',
- 			password: ''
- 		};
+app.controller('chatController', ['$scope', 'socketFactory', 'dataModelService',
+ 	function($scope,socket,dataModelService){
 
- 		$scope.chatRoom = userInfo;
+ 		$scope.chatRoom = dataModelService.initScope();
 
  		$scope.login = function(loginName, loginPassword){
  			var info = {
@@ -20,4 +15,41 @@ app.controller('chatController', ['$scope',
  			console.log('info:',info);
  			socket.emit('login',info);
  		}
- 	}]);
+
+ 		$scope.send = function(content){
+ 			if (content) {
+ 				dataModelService.sendMessageToRoom($scope.chatRoom.userInfo.name, content);
+ 			};
+ 		}
+
+ 		listenLoginResponseFromServer(socket,$scope);
+
+ 		checkNewMessage(socket)
+
+ 		listenOtherClientLogin(socket);
+ 		
+ 		console.log('scope:',$scope);	
+ 	}
+]);
+
+function listenLoginResponseFromServer(socket, $scope){
+	socket.on('loginResponse', function(loginData){
+		if (loginData.loginSucceed) {
+			$scope.chatRoom.userInfo.hasLogined = true;
+		} else {
+			alert('user has logined');
+		}
+	});
+}
+
+function checkNewMessage(socket, $scope){
+	socket.on('newMessageShouldShowInRoom', function(allMessage){
+		$scope.chatRoom.roomMessage.allMessage = allMessage;
+	});
+}
+
+function listenOtherClientLogin(socket){
+	socket.on('broadcastOtherUser', function(data){
+		console.log('other user:',data);
+	});
+}

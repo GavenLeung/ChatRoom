@@ -3,18 +3,43 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>单机版在线聊天室</title>
-    <!-- <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" > -->
-    <!-- <link rel="stylesheet" type="text/css" href="./assets/style/app.css"/> -->
+    <link rel="stylesheet" href="/stylesheets/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="/stylesheets/css/app.css"/>
 </head>
 <body ng-app="ChatApp" ng-controller="chatController">
     <!-- login panel -->
-    <div>
+    <div ng-if="!chatRoom.userInfo.hasLogined">
         <p>Welcome , please login <%-title%></p>
-        <span>Login name:<input type="text" ng-model="chatRoom.name"></span>
-        <span>Password:<input type="password" ng-model="chatRoom.password"></span>
-        <input type="button" value="login" ng-click="login(chatRoom.name, chatRoom.password)">
+        <span>Login name:<input type="text" ng-model="chatRoom.userInfo.name"></span>
+        <span>Password:<input type="password" ng-model="chatRoom.userInfo.password"></span>
+        <input type="button" value="login" ng-click="login(chatRoom.userInfo.name, chatRoom.userInfo.password)">
     </div>
-
+    <!-- in room -->
+    <div class="chat-room-wrapper" ng-if="chatRoom.userInfo.hasLogined">
+        <div class="online panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">在线<span class="user-number">{{users.length-1}}</span></h3>
+            </div>
+            <div class="user-wrapper panel-body">
+                <user iscurrentreceiver="receiver===user.nickname" info="user" ng-repeat="user in users"></user>
+            </div>
+        </div>
+        <div class="chat-room panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">群聊</h3>
+            </div>
+            <div class="message-wrapper panel-body">
+                    <message self="nickname" scrolltothis="scrollToBottom()" info="message" ng-repeat="message in chatRoom.roomMessage.allMessage"></message>
+            </div>
+            <div class="panel-footer">
+                <form class="post-form form-inline" novalidate name="postform" ng-submit="send(chatRoom.roomMessage.allMessage.sendContent)">
+                    <input type="text" class="form-control" ng-model="words" placeholder="说点什么呗" required>
+                    <button type="submit" class="btn btn-success" ng-disabled="postform.$invalid">发送</button>
+                </form>
+            </div>
+        </div> 
+    </div> 
+</body>
 <!-- chat room -->
 <!-- <div class="chat-room-wrapper" ng-show="hasLogined">
     <div class="online panel panel-success">
@@ -60,9 +85,11 @@
 </div> -->
 <!-- end of login form -->
 
-</body>
+
 <script type="text/javascript" src="/javascripts/lib/socket.io.js"></script>
 <!-- <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script> -->
 <script type="text/javascript" src="/javascripts/lib/angular.js"></script>
+<script type="text/javascript" src="/javascripts/factory/SocketFactory.js"></script>
+<script type="text/javascript" src="/javascripts/service/DataModelService.js"></script>
 <script type="text/javascript" src="/javascripts/controller/ChatRoomController.js"></script>
 </html>
