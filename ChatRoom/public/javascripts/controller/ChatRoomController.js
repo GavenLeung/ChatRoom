@@ -3,8 +3,6 @@ var app = angular.module('ChatApp');
 app.controller('chatController', ['$scope', 'socketFactory', 'dataModelService',
  	function($scope,socket,dataModelService){
 
-
-
  		$scope.chatRoom = dataModelService.initScope();
 
  		$scope.login = function(loginName, loginPassword){
@@ -29,8 +27,6 @@ app.controller('chatController', ['$scope', 'socketFactory', 'dataModelService',
  		checkNewMessage(socket)
 
  		listenOtherClientLogin(socket);
- 		
- 		console.log('scope:',$scope);	
  	}
 ]);
 
