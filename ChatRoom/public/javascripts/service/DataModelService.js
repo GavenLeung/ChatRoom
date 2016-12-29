@@ -19,6 +19,10 @@ app.service('dataModelService', ['socketFactory',
 			return initData;	
 		}
 
-//  test rebase in master
-		this.readyForTestRebase = function(){}
+//  test rebase in 2 master
+		this.readyForTestRebase = function(){
+			for (var i in arguments) {
+				
+			};
+		}
 	}]);
