@@ -25,4 +25,5 @@ app.service('dataModelService', ['socketFactory',
 				
 			};
 		}
+
 	}]);
