@@ -20,9 +20,11 @@ app.service('dataModelService', ['socketFactory',
 		}
 
 //  test rebase in 2 master
-		this.readyForTestRebase = function(){
+//  test rebase in chat_0002
+		this.readyForTestRebase = function('aa','bb'){
 			for (var i in arguments) {
 				
 			};
 		}
+
 	}]);
