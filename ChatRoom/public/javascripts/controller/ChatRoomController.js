@@ -28,7 +28,7 @@ app.controller('chatController', ['$scope', 'socketFactory', 'dataModelService',
 
  		listenOtherClientLogin(socket);
 
-// test master
+// test master 2
  		console.log($scope);
  	}
 ]);
